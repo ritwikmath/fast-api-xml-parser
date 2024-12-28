@@ -6,6 +6,8 @@ Run application
 fastapi.exe dev ./main.py
 ```
 
+
+Call API
 ```bash
 curl --location 'http://127.0.0.1:8000' \
 --header 'Content-Type: application/xml' \
