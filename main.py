@@ -4,6 +4,7 @@ from pydantic_xml import BaseXmlModel, element
 from pydantic import BaseModel, ConfigDict
 from xml.dom.minidom import parse
 from xml_parser import parse
+from logger import logger
 
 app = FastAPI()
 import exceptions.exception_handler
@@ -46,14 +47,24 @@ async def convert_xml_to_json(request: Request, call_next):
             ]
         except Exception as e:
             raise HTTPException(status_code=400, detail="Invalid XML format")
-    response = await call_next(request)
-    return response
+    try:
+    
+        response = await call_next(request)
+        return response
+    except Exception as ex:
+        logger.error(ex.__str__(), exc_info=ex)
+        return {
+            "message": "Internal Server Error"
+        }
+        
+    
 
 
 @app.get("/")
 async def index():
-    PersonWrapper(**{"r": "i"})
-    raise HTTPException(404, "Items not found")
+    # PersonWrapper(**{"r": "i"})
+    logger.info("Index function")
+    raise Exception("Items not found")
 
 
 @app.post("/")
